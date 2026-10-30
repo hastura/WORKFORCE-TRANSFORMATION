@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Meridian - Executive Capability Intelligence Platform</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom clean scrollbars for dense Bento views */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Bento Box UI Helpers */
+    .bento-card {
+      background-color: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem; /* rounded-2xl */
+      box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .bento-card:hover {
+      border-color: #cbd5e1;
+    }
+    .bento-card-subtle {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.875rem; /* rounded-xl */
+    }
+    .badge-base {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.25rem 0.625rem;
+      border-radius: 0.375rem;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50/80 text-slate-800 font-sans antialiased selection:bg-sky-500 selection:text-white flex flex-row overflow-hidden">
+
+  <!-- LEFT EXECUTIVE SIDEBAR NAVIGATION -->
+  <aside class="w-72 bg-white border-r border-slate-200 flex flex-col justify-between shrink-0 h-full z-30 p-5 shadow-xs">
+    <div class="space-y-6">
+      <!-- Brand Header -->
+      <div class="flex items-center gap-3 pb-5 border-b border-slate-200">
+        <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white font-bold text-lg shadow-xs shrink-0">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[11px] font-bold tracking-wider text-sky-700 uppercase font-mono">Project Meridian</span>
+          </div>
+          <h1 class="text-xs font-extrabold text-slate-900 leading-tight">
+            Capability Overlay Platform
+          </h1>
+          <p class="text-[10px] text-slate-500 font-medium">BUMN Energi Transformation</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="space-y-1">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider font-mono px-3 mb-2">Executive Modules</p>
+        
+        <button onclick="switchTab('tab-exposure')" id="btn-tab-exposure" class="nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-white bg-slate-900 shadow-sm">
+          <span class="w-5 h-5 rounded-md bg-white/20 flex items-center justify-center text-[10px] font-mono shrink-0">1</span>
+          <div class="text-left flex-1 min-w-0">
+            <p class="truncate font-bold">AI Exposure &amp; Data Fix</p>
+            <p class="text-[10px] opacity-75 font-normal truncate">Identity &amp; Risk Map</p>
+          </div>
+        </button>
+
+        <button onclick="switchTab('tab-architecture')" id="btn-tab-architecture" class="nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <span class="w-5 h-5 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-[10px] font-mono shrink-0">2</span>
+          <div class="text-left flex-1 min-w-0">
+            <p class="truncate font-bold">Capability Architecture</p>
+            <p class="text-[10px] opacity-75 font-normal truncate">12 Job Families &amp; Leveling</p>
+          </div>
+        </button>
+
+        <button onclick="switchTab('tab-aha')" id="btn-tab-aha" class="nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all text-amber-900 bg-amber-50 hover:bg-amber-100/80 border border-amber-300 my-1.5">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-600 text-sm shrink-0"></i>
+          <div class="text-left flex-1 min-w-0">
+            <p class="truncate font-extrabold text-amber-950">AHA Moment: Matcher</p>
+            <p class="text-[10px] text-amber-800 font-medium truncate">Redeployment 4.200 Staf</p>
+          </div>
+        </button>
+
+        <button onclick="switchTab('tab-economics')" id="btn-tab-economics" class="nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <span class="w-5 h-5 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-[10px] font-mono shrink-0">4</span>
+          <div class="text-left flex-1 min-w-0">
+            <p class="truncate font-bold">Workforce Economics</p>
+            <p class="text-[10px] opacity-75 font-normal truncate">Proxy Financial Model</p>
+          </div>
+        </button>
+
+        <button onclick="switchTab('tab-board')" id="btn-tab-board" class="nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+          <span class="w-5 h-5 rounded-md bg-slate-200 text-slate-700 flex items-center justify-center text-[10px] font-mono shrink-0">5</span>
+          <div class="text-left flex-1 min-w-0">
+            <p class="truncate font-bold">90-Day Gate Sign-off</p>
+            <p class="text-[10px] opacity-75 font-normal truncate">Board &amp; Ministry Approval</p>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- User Profile & Context Box -->
+    <div class="space-y-3 pt-4 border-t border-slate-200">
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
+          HC
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-xs font-bold text-slate-900 truncate">Ibu Direktur HC</p>
+          <p class="text-[10px] text-emerald-700 font-mono font-semibold truncate">State Energy Enterprise</p>
+        </div>
+      </div>
+      <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between px-1">
+        <span>Engagement: Rp 3,5B</span>
+        <span class="text-emerald-600 font-bold"><i class="fa-solid fa-circle text-[6px] mr-1"></i>Active</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="flex-1 overflow-hidden relative flex flex-col h-full bg-slate-50/80">
+
+    <!-- MODULE 1: AI EXPOSURE & IDENTITY RESOLUTION (BENTO BOX LAYOUT) -->
+    <section id="tab-exposure" class="tab-content w-full h-full p-6 overflow-y-auto space-y-5">
+      
+      <!-- Top Bento Metric Tiles (4 Columns) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="bento-card p-5 border-l-4 border-l-sky-600 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Headcount Klien</span>
+            <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center text-xs"><i class="fa-solid fa-users"></i></span>
+          </div>
+          <div class="my-3">
+            <span class="text-3xl font-extrabold text-slate-900 font-mono">52.140</span>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-slate-500">
+            <span>6 Unit Ops + Head Office</span>
+            <span class="font-mono text-sky-700 font-semibold">1.842 Jabatan</span>
+          </div>
+        </div>
+
+        <div class="bento-card p-5 border-l-4 border-l-amber-500 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Populasi Terdisrupsi AI</span>
+            <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center text-xs"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          </div>
+          <div class="my-3 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-amber-600 font-mono">4.200</span>
+            <span class="badge-base bg-amber-100 text-amber-800 border border-amber-300">70% Disrupted</span>
+          </div>
+          <p class="text-[11px] text-amber-800 font-medium">Rumpun Field Metering (18 Bulan)</p>
+        </div>
+
+        <div class="bento-card p-5 border-l-4 border-l-emerald-600 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">AI Identity Resolution</span>
+            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center text-xs"><i class="fa-solid fa-link"></i></span>
+          </div>
+          <div class="my-3 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-emerald-600 font-mono">98,4%</span>
+            <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">Resolved</span>
+          </div>
+          <p class="text-[11px] text-slate-500">Sinkronisasi ID SAP, Moodle, &amp; Oracle</p>
+        </div>
+
+        <div class="bento-card p-5 border-l-4 border-l-indigo-600 flex flex-col justify-between">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Skill Gap Imputation</span>
+            <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-700 flex items-center justify-center text-xs"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+          </div>
+          <div class="my-3 flex items-baseline gap-2">
+            <span class="text-3xl font-extrabold text-indigo-700 font-mono">23.460</span>
+            <span class="badge-base bg-indigo-100 text-indigo-800 border border-indigo-300">Inferred</span>
+          </div>
+          <p class="text-[11px] text-slate-500">Pengisian Otomatis 45% Data Kosong</p>
+        </div>
+
+      </div>
+
+      <!-- Main Interactive Bento Grid (12 Columns) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Wide Bento Box: Job Family AI Exposure Heatmap (Span 7) -->
+        <div class="lg:col-span-7 bento-card p-6 flex flex-col justify-between space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+            <div>
+              <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-radar text-sky-600"></i> Peta Risiko Disrupsi AI (12 Job Families)
+              </h2>
+              <p class="text-xs text-slate-500">Analisis tingkat otomatisasi tugas dalam 18-24 bulan ke depan</p>
+            </div>
+            <span class="badge-base bg-slate-100 text-slate-700 border border-slate-200">Urut Risiko</span>
+          </div>
+
+          <div class="space-y-3">
+            <!-- Item 1: Critical Risk (Field Metering) -->
+            <div class="p-4 bg-amber-50/70 border border-amber-300 rounded-xl flex items-center justify-between hover:border-amber-400 transition cursor-pointer" onclick="switchTab('tab-architecture')">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-900">1. Field Metering &amp; Manual Operations</span>
+                  <span class="badge-base bg-rose-100 text-rose-800 border border-rose-300">Kritis (70% Disrupted)</span>
+                </div>
+                <p class="text-xs text-slate-600">Pencatatan meteran manual, verifikasi tagihan fisik, inspeksi gardu lapangan dasar.</p>
+              </div>
+              <div class="text-right shrink-0 ml-4">
+                <p class="text-base font-mono font-bold text-slate-900">6.000 Staf</p>
+                <p class="text-[11px] font-bold text-rose-700">~4.200 Peran Terancam</p>
+              </div>
+            </div>
+
+            <!-- Item 2: Moderate Risk -->
+            <div class="p-4 bento-card-subtle flex items-center justify-between hover:border-slate-300 transition">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-800">2. Customer Support &amp; Billing Admin</span>
+                  <span class="badge-base bg-amber-100 text-amber-800 border border-amber-300">Sedang (45% Disrupted)</span>
+                </div>
+                <p class="text-xs text-slate-500">Pelayanan loket, rekonsiliasi piutang manual, entri data pelanggan.</p>
+              </div>
+              <div class="text-right shrink-0 ml-4">
+                <p class="text-base font-mono font-bold text-slate-700">5.400 Staf</p>
+                <p class="text-[11px] text-amber-700 font-medium">~2.430 Peran Terancam</p>
+              </div>
+            </div>
+
+            <!-- Item 3: Low Risk (Operational Technicians) -->
+            <div class="p-4 bento-card-subtle flex items-center justify-between hover:border-slate-300 transition">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-800">3. Grid Transmission &amp; Maintenance</span>
+                  <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">Rendah (15% Disrupted)</span>
+                </div>
+                <p class="text-xs text-slate-500">Pemeliharaan kabel tegangan tinggi, pemulihan pemadaman, teknisi gardu.</p>
+              </div>
+              <div class="text-right shrink-0 ml-4">
+                <p class="text-base font-mono font-bold text-slate-700">18.200 Staf</p>
+                <p class="text-[11px] text-emerald-700 font-medium">~2.730 Peran Berubah</p>
+              </div>
+            </div>
+
+            <!-- Item 4: Low Risk (Generation) -->
+            <div class="p-4 bento-card-subtle flex items-center justify-between hover:border-slate-300 transition">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-800">4. Power Plant &amp; Thermal Generation</span>
+                  <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">Rendah (20% Disrupted)</span>
+                </div>
+                <p class="text-xs text-slate-500">Pengoperasian turbin, pemeliharaan fisik pembangkit, pengawasan K3.</p>
+              </div>
+              <div class="text-right shrink-0 ml-4">
+                <p class="text-base font-mono font-bold text-slate-700">12.500 Staf</p>
+                <p class="text-[11px] text-emerald-700 font-medium">~2.500 Peran Berubah</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tall Bento Box: Identity Resolution Panel (Span 5) -->
+        <div class="lg:col-span-5 bento-card p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3">
+              <i class="fa-solid fa-code-compare text-emerald-600"></i> AI Identity Resolver Demo
+            </h2>
+            <p class="text-xs text-slate-500">Penggabungan ID Karyawan yang terfragmentasi antar sistem tanpa ganti HRIS</p>
+
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3 font-mono text-xs">
+              <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                <span class="text-slate-500 font-sans">Sample Worker Record:</span>
+                <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">Resolved (100% Match)</span>
+              </div>
+              
+              <div class="space-y-2 text-[11px]">
+                <div class="flex justify-between">
+                  <span class="text-slate-500 font-sans">SAP HRIS ID:</span>
+                  <span class="text-slate-900 font-semibold">EMP-48213 (Engineer Madya)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500 font-sans">Moodle LMS ID:</span>
+                  <span class="text-slate-900 font-semibold">learner_9981 (Active)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-slate-500 font-sans">Payroll Oracle ID:</span>
+                  <span class="text-amber-800 font-semibold">PN-7740 (Restricted Proxy)</span>
+                </div>
+                <div class="flex justify-between border-t border-slate-200 pt-1.5">
+                  <span class="text-slate-600 font-sans font-bold">Resolved Identity:</span>
+                  <span class="text-slate-900 font-bold">Budi Santoso (Sub-Unit 3)</span>
+                </div>
+              </div>
+
+              <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg text-[11px] text-sky-900 font-sans">
+                <i class="fa-solid fa-circle-info text-sky-600 mr-1"></i>
+                <b>Skill Imputation Engine:</b> 45% record skill yang kosong diisi otomatis dengan menganalisis sertifikasi Moodle, log aktivitas peralatan, dan data operasional.
+              </div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('tab-architecture')" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition shadow-xs flex items-center justify-center gap-2 mt-auto">
+            Lanjut ke Arsitektur Kapabilitas
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- MODULE 2: CAPABILITY ARCHITECTURE & PROVENANCE DRAWER (BENTO BOX LAYOUT) -->
+    <section id="tab-architecture" class="tab-content w-full h-full p-6 overflow-y-auto space-y-5 hidden">
+      
+      <!-- Top Bento Header Tile -->
+      <div class="bento-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-diagram-project text-sky-600"></i> Arsitektur Kapabilitas: Perampingan 1.842 Jabatan
+          </h2>
+          <p class="text-xs text-slate-500">Penyederhanaan gelar kaku menjadi 12 Job Families &amp; 5 Leveling Bands dengan Formula Kapabilitas</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-500 font-medium">Formula Identitas:</span>
+          <span class="text-xs font-mono bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg text-slate-900 font-bold">
+            Pegawai = Grade (L1-L5) + Domain + Skill Portfolio
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Bento Grid (12 Columns) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Wide Bento Box: Table of Compressed Titles (Span 8) -->
+        <div class="lg:col-span-8 bento-card p-6 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+            <h3 class="text-sm font-bold text-slate-900">Rumpun Kapabilitas: Field Metering &amp; Smart Operations</h3>
+            <span class="text-xs text-slate-500">Klik pegawai untuk melihat Data Provenance &amp; Confidence Score</span>
+          </div>
+
+          <div class="overflow-x-auto border border-slate-200 rounded-xl">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase text-[10px] font-mono">
+                <tr>
+                  <th class="p-3">Gelar Jabatan Lama (SAP)</th>
+                  <th class="p-3">Level Kapabilitas Baru</th>
+                  <th class="p-3">Domain Focus</th>
+                  <th class="p-3">Confidence Score</th>
+                  <th class="p-3 text-right">Aksi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <tr class="hover:bg-slate-50/80 transition cursor-pointer" onclick="openProvenanceModal('Budi Santoso', 'Senior Technician II', 'Level 2 - Technician', 'Smart Metering & IoT', '84%', 'Inferred from Moodle LMS + SAP Field Logs')">
+                  <td class="p-3 font-semibold text-slate-900">Senior Technician II (Plat 3)</td>
+                  <td class="p-3"><span class="badge-base bg-sky-50 text-sky-800 border border-sky-200">Level 2 (Technician)</span></td>
+                  <td class="p-3">Smart Metering &amp; IoT</td>
+                  <td class="p-3"><span class="text-emerald-700 font-mono font-bold">84% (Inferred)</span></td>
+                  <td class="p-3 text-right"><span class="text-sky-700 hover:underline font-semibold">Lihat Proof &rsaquo;</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition cursor-pointer" onclick="openProvenanceModal('Siti Rahma', 'Engineer Madya Metering', 'Level 3 - Specialist', 'Power Data Analytics', '92%', 'Measured from Certified Training & SAP Ops')">
+                  <td class="p-3 font-semibold text-slate-900">Engineer Madya Metering</td>
+                  <td class="p-3"><span class="badge-base bg-indigo-50 text-indigo-800 border border-indigo-200">Level 3 (Specialist)</span></td>
+                  <td class="p-3">Power Data Analytics</td>
+                  <td class="p-3"><span class="text-emerald-700 font-mono font-bold">92% (Measured)</span></td>
+                  <td class="p-3 text-right"><span class="text-sky-700 hover:underline font-semibold">Lihat Proof &rsaquo;</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition cursor-pointer" onclick="openProvenanceModal('Ahmad Hidayat', 'Pengawas Pencatatan Lapangan', 'Level 2 - Technician', 'Manual Meter Operations', '68%', 'Inferred with Low Confidence (<80%)')">
+                  <td class="p-3 font-semibold text-slate-900">Pengawas Pencatatan Lapangan</td>
+                  <td class="p-3"><span class="badge-base bg-amber-50 text-amber-800 border border-amber-200">Level 2 (Technician)</span></td>
+                  <td class="p-3">Manual Meter Ops</td>
+                  <td class="p-3"><span class="text-amber-700 font-mono font-bold">68% (Needs Review)</span></td>
+                  <td class="p-3 text-right"><span class="text-amber-700 hover:underline font-semibold">Review &rsaquo;</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition cursor-pointer" onclick="openProvenanceModal('Dedi Kurniawan', 'Teknisi Pembaca IV', 'Level 1 - Junior Tech', 'Field Execution', '88%', 'Measured from Moodle LMS Logs')">
+                  <td class="p-3 font-semibold text-slate-900">Teknisi Pembaca IV</td>
+                  <td class="p-3"><span class="badge-base bg-slate-100 text-slate-800 border border-slate-200">Level 1 (Junior Tech)</span></td>
+                  <td class="p-3">Field Execution</td>
+                  <td class="p-3"><span class="text-emerald-700 font-mono font-bold">88% (Inferred)</span></td>
+                  <td class="p-3 text-right"><span class="text-sky-700 hover:underline font-semibold">Lihat Proof &rsaquo;</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Meritocracy Callout Banner inside Bento Box -->
+          <div class="p-4 bg-sky-50/80 border border-sky-200 rounded-xl flex items-start gap-3 text-xs text-sky-900">
+            <i class="fa-solid fa-scale-balanced text-sky-700 text-lg shrink-0 mt-0.5"></i>
+            <div>
+              <p class="font-bold text-slate-900 mb-0.5">Prinsip Meritokrasi &amp; Penilaian Fair:</p>
+              <p class="text-slate-700">
+                Arsitektur kapabilitas membuang sistem kaku "menunggu kursi kosong". Penilaian didasarkan pada kompetensi terbukti (*evidence-based*). Karyawan yang ingin naik level cukup melengkapi portofolio skill dan sertifikasi, menciptakan iklim karir yang adil dan obyektif.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tall Bento Box: Capability Leveling Pyramid & Rules (Span 4) -->
+        <div class="lg:col-span-4 bento-card p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3">
+              <i class="fa-solid fa-layer-group text-indigo-600"></i> Standardisasi 5 Capability Levels
+            </h3>
+
+            <div class="space-y-2.5 text-xs">
+              <div class="p-3 bg-indigo-50/60 border border-indigo-200 rounded-xl flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-indigo-950">Level 5 - Expert / Architect</p>
+                  <p class="text-[11px] text-slate-600">Strategi arsitektur energi &amp; kebijakan</p>
+                </div>
+                <span class="font-mono text-indigo-800 font-bold">Top 3%</span>
+              </div>
+
+              <div class="p-3 bg-sky-50/60 border border-sky-200 rounded-xl flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-sky-950">Level 4 - Lead Specialist</p>
+                  <p class="text-[11px] text-slate-600">Supervisi teknis regional &amp; insiden</p>
+                </div>
+                <span class="font-mono text-sky-800 font-bold">12%</span>
+              </div>
+
+              <div class="p-3 bg-emerald-50/60 border border-emerald-200 rounded-xl flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-emerald-950">Level 3 - Specialist</p>
+                  <p class="text-[11px] text-slate-600">Analisis data smart grid &amp; pemeliharaan</p>
+                </div>
+                <span class="font-mono text-emerald-800 font-bold">25%</span>
+              </div>
+
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-slate-800">Level 2 - Technician</p>
+                  <p class="text-[11px] text-slate-600">Pemeliharaan harian, sensor instalasi</p>
+                </div>
+                <span class="font-mono text-slate-700 font-bold">40%</span>
+              </div>
+
+              <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-slate-800">Level 1 - Junior Tech / Operator</p>
+                  <p class="text-[11px] text-slate-600">Pekerjaan dasar terpandu SOP</p>
+                </div>
+                <span class="font-mono text-slate-700 font-bold">20%</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="switchTab('tab-aha')" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl transition shadow-xs flex items-center justify-center gap-2 mt-auto">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Buka AHA Moment: Simulasi Redeployment
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- MODULE 3: THE ENGINEERED AHA MOMENT (REDEPLOYMENT MATCHING ENGINE) -->
+    <section id="tab-aha" class="tab-content w-full h-full p-6 overflow-y-auto space-y-5 hidden">
+      
+      <!-- Top Bento Hero Tile (Full Width) -->
+      <div class="bento-card p-6 bg-gradient-to-r from-amber-50/90 via-white to-emerald-50/90 border-2 border-amber-300 space-y-4 shadow-xs">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="badge-base bg-amber-600 text-white font-mono">The AHA Moment</span>
+              <h2 class="text-xl font-extrabold text-slate-900">Live AI Redeployment &amp; Skill Matcher Engine</h2>
+            </div>
+            <p class="text-xs text-slate-700 max-w-3xl">
+              Lihat bagaimana <b>4.200 staf Field Metering yang terdisrupsi AI</b> dipetakan secara otomatis ke <b>Adjacent Capability Bands</b> (*IoT Sensor Maintenance &amp; Smart Grid Operations*) tanpa pemecatan massal.
+            </p>
+          </div>
+
+          <!-- Trigger Transformation Button -->
+          <button id="btn-run-matcher" onclick="runAhaMatcherSimulation()" class="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-xl transition shadow-md flex items-center gap-2.5 shrink-0 transform active:scale-95">
+            <i class="fa-solid fa-bolt-lightning text-amber-300 text-base"></i>
+            <span>JALANKAN MATCHING 4.200 PEGAWAI</span>
+          </button>
+        </div>
+
+        <!-- Progress Flow Bar -->
+        <div id="matcher-progress" class="hidden space-y-2 pt-2 border-t border-slate-200">
+          <div class="flex justify-between text-xs">
+            <span class="text-amber-800 font-mono font-bold" id="progress-status">Menghitung Skill Delta &amp; Matrix Proximity...</span>
+            <span class="text-emerald-700 font-mono font-bold" id="progress-percent">0%</span>
+          </div>
+          <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden p-0.5 border border-slate-300">
+            <div id="progress-bar" class="bg-gradient-to-r from-amber-500 via-sky-600 to-emerald-600 h-full rounded-full w-0 transition-all duration-300"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Bento Grid Results (12 Columns) -->
+      <div id="aha-results" class="grid grid-cols-1 lg:grid-cols-12 gap-5 opacity-60 pointer-events-none transition-all duration-500">
+        
+        <!-- Wide Bento Box: Flow Map Adjacent Capability Bands (Span 7) -->
+        <div class="lg:col-span-7 bento-card p-6 space-y-4">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center justify-between border-b border-slate-200 pb-3">
+            <span><i class="fa-solid fa-route text-emerald-600"></i> Peta Alokasi Alih Peran (Adjacent Bands Flow)</span>
+            <span id="match-count-badge" class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">Ready to Execute</span>
+          </h3>
+
+          <div class="space-y-3.5">
+            <!-- Adjacent Band 1 -->
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                  <span class="font-bold text-sm text-slate-900">IoT Sensor Maintenance &amp; Field Telemetry</span>
+                </div>
+                <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">2.520 Staf (60%)</span>
+              </div>
+              <p class="text-xs text-slate-600">Peralihan dari pencatatan fisik ke instalasi, pemeliharaan, dan kalibrasi sensor meter pintar jarak jauh.</p>
+              
+              <div class="flex items-center gap-4 text-xs font-mono bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="text-slate-500 font-sans">Kebutuhan Skill Delta:</span>
+                <span class="text-slate-900 font-semibold">Basic IoT Sensor, Telemetry Protocols</span>
+                <span class="text-emerald-700 ml-auto font-bold font-sans">Moodle Track: 12 Minggu</span>
+              </div>
+            </div>
+
+            <!-- Adjacent Band 2 -->
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-sky-600"></span>
+                  <span class="font-bold text-sm text-slate-900">Smart Grid Operations &amp; Load Monitoring</span>
+                </div>
+                <span class="badge-base bg-sky-100 text-sky-800 border border-sky-300">1.260 Staf (30%)</span>
+              </div>
+              <p class="text-xs text-slate-600">Pemantauan beban arus listrik waktu nyata di pusat kendali operasional regional.</p>
+              
+              <div class="flex items-center gap-4 text-xs font-mono bg-white p-2.5 rounded-lg border border-slate-200">
+                <span class="text-slate-500 font-sans">Kebutuhan Skill Delta:</span>
+                <span class="text-slate-900 font-semibold">Data Analytics Base, Grid Telemetry</span>
+                <span class="text-sky-700 ml-auto font-bold font-sans">Moodle Track: 16 Minggu</span>
+              </div>
+            </div>
+
+            <!-- Non-Reskillable Segment (Attribution) -->
+            <div class="p-4 bg-amber-50/80 border border-amber-300 rounded-xl space-y-2">
+              <div class="flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span>
+                  <span class="font-bold text-sm text-slate-900">Dukungan Operasional Lokal / Masa Transisi Pensiun</span>
+                </div>
+                <span class="badge-base bg-amber-100 text-amber-800 border border-amber-300">420 Staf (10%)</span>
+              </div>
+              <p class="text-xs text-slate-600">Bagi staf mendekati masa pensiun (&lt;2 tahun) atau tidak memilih reskilling teknis, dialihkan ke penugasan fasilitator operasional tanpa tindakan PHK.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tall Bento Box: Decision Impact & Summary (Span 5) -->
+        <div class="lg:col-span-5 bento-card p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2 border-b border-slate-200 pb-3">
+              <i class="fa-solid fa-chart-line text-emerald-600"></i> Dampak Keputusan Seketika
+            </h3>
+
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl space-y-1">
+              <p class="text-[11px] text-emerald-800 font-mono uppercase font-bold">Potensi Penghematan Finansial</p>
+              <p class="text-3xl font-extrabold text-slate-900 font-mono" id="aha-saving-text">Rp 126,0 Miliar</p>
+              <p class="text-[11px] text-emerald-700 font-medium">Terhindar dari Biaya Pesangon PHK &amp; Re-hire</p>
+            </div>
+
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-600">Sikap Serikat Pekerja:</span>
+                <span class="text-emerald-700 font-bold">100% Dukungan</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-600">Garansi Kontrak:</span>
+                <span class="text-slate-900 font-semibold">Tanpa Turun Grade / Gaji</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-600">Izin Kementerian:</span>
+                <span class="text-emerald-700 font-bold">Disetujui (Zero Layoffs)</span>
+              </div>
+            </div>
+
+            <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg text-xs text-sky-950">
+              <p class="font-bold text-slate-900 mb-1"><i class="fa-solid fa-check-circle text-sky-600 mr-1"></i> Penilaian Fair &amp; Transparan:</p>
+              Setiap staf memiliki akses modul pelatihan Moodle yang sama. Kelulusan dinilai secara terukur, menjamin keadilan bagi seluruh pegawai.
+            </div>
+          </div>
+
+          <button onclick="switchTab('tab-economics')" class="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 mt-auto">
+            Lihat Detail Simulator Ekonomi
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- MODULE 4: WORKFORCE ECONOMICS SIMULATOR (BENTO BOX LAYOUT) -->
+    <section id="tab-economics" class="tab-content w-full h-full p-6 overflow-y-auto space-y-5 hidden">
+      
+      <!-- Top Bento Header Tile -->
+      <div class="bento-card p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-calculator text-emerald-600"></i> Simulator Ekonomi Tenaga Kerja (Proxy Grade Model)
+          </h2>
+          <p class="text-xs text-slate-500">Memodelkan nilai ekonomi tanpa menggunakan data Payroll Oracle (Akses Dibatasi Kementerian)</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-500 font-medium">Model Asumsi:</span>
+          <span class="badge-base bg-emerald-50 text-emerald-800 border border-emerald-200">Proxy Margin Eror &plusmn;5%</span>
+        </div>
+      </div>
+
+      <!-- Main Bento Grid (12 Columns) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        
+        <!-- Controls Bento Box (Span 4) -->
+        <div class="lg:col-span-4 bento-card p-6 space-y-5">
+          <h3 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-3">
+            Parameter Simulasi Keputusan
+          </h3>
+
+          <!-- Slider 1: Severance Average -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <label for="slider-severance" class="text-slate-700 font-semibold">Pesangon per Staf (Proxy Grade 2):</label>
+              <span id="val-severance" class="font-mono text-sky-700 font-bold">Rp 30 Juta</span>
+            </div>
+            <input type="range" id="slider-severance" min="15" max="50" value="30" step="5" oninput="updateEconomicModel()" class="w-full accent-sky-600 bg-slate-200 h-2 rounded-lg cursor-pointer">
+          </div>
+
+          <!-- Slider 2: Reskilling Cost -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <label for="slider-reskill" class="text-slate-700 font-semibold">Biaya Reskilling per Staf (Moodle):</label>
+              <span id="val-reskill" class="font-mono text-emerald-700 font-bold">Rp 1,2 Juta</span>
+            </div>
+            <input type="range" id="slider-reskill" min="0.5" max="3.0" value="1.2" step="0.1" oninput="updateEconomicModel()" class="w-full accent-emerald-600 bg-slate-200 h-2 rounded-lg cursor-pointer">
+          </div>
+
+          <!-- Slider 3: Re-hire Cost -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <label for="slider-rehire" class="text-slate-700 font-semibold">Biaya Rekrut Baru per Staf:</label>
+              <span id="val-rehire" class="font-mono text-amber-700 font-bold">Rp 5 Juta</span>
+            </div>
+            <input type="range" id="slider-rehire" min="2" max="10" value="5" step="1" oninput="updateEconomicModel()" class="w-full accent-amber-600 bg-slate-200 h-2 rounded-lg cursor-pointer">
+          </div>
+
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600 space-y-1">
+            <p class="font-bold text-slate-900">Metodologi Rakamin Proxy Valuation:</p>
+            <p>Penghitungan menggunakan rata-rata kompensasi grade pekerjaan BUMN energi, memastikan angka finansial dapat dipertahankan di hadapan Dewan Komisaris.</p>
+          </div>
+        </div>
+
+        <!-- Comparative Scenario Results Bento Box (Span 8) -->
+        <div class="lg:col-span-8 bento-card p-6 flex flex-col justify-between space-y-5">
+          <div class="space-y-4">
+            <h3 class="text-sm font-bold text-slate-900 border-b border-slate-200 pb-3">
+              Perbandingan Skenario Keputusan Bisnis (4.200 Staf Field Metering)
+            </h3>
+
+            <div class="overflow-x-auto border border-slate-200 rounded-xl">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase text-[10px] font-mono">
+                  <tr>
+                    <th class="p-3">Komponen Anggaran</th>
+                    <th class="p-3 text-rose-700">Skenario A: PHK Massal &amp; Re-hire</th>
+                    <th class="p-3 text-emerald-700">Skenario B: Rakamin Redeployment</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-800 font-mono">
+                  <tr>
+                    <td class="p-3 font-sans text-slate-900 font-medium">Biaya Pesangon / Layoff</td>
+                    <td class="p-3 text-rose-700 font-bold" id="sim-layoff-cost">-Rp 126,0 M</td>
+                    <td class="p-3 text-emerald-700 font-bold">Rp 0 (Zero Layoffs)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-sans text-slate-900 font-medium">Biaya Rekrut Eksternal Baru</td>
+                    <td class="p-3 text-rose-700 font-bold" id="sim-rehire-cost">-Rp 21,0 M</td>
+                    <td class="p-3 text-emerald-700 font-bold">Rp 0 (Internal Shift)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-sans text-slate-900 font-medium">Biaya Program &amp; Kontrak Engagement</td>
+                    <td class="p-3 text-slate-400">Rp 0</td>
+                    <td class="p-3 text-amber-800 font-bold" id="sim-program-cost">-Rp 8,5 M</td>
+                  </tr>
+                  <tr class="bg-slate-50 font-bold font-sans text-sm border-t-2 border-slate-200">
+                    <td class="p-3 text-slate-900">Total Pengeluaran / Dampak Netto</td>
+                    <td class="p-3 text-rose-700 font-mono" id="sim-total-a">-Rp 147,0 M</td>
+                    <td class="p-3 text-emerald-700 font-mono" id="sim-total-b">-Rp 8,5 M</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Highlight ROI Box -->
+          <div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="text-xs text-emerald-800 uppercase font-mono font-bold">Penghematan Bersih Korporasi (Net Avoidance)</p>
+              <p class="text-3xl font-extrabold text-slate-900 font-mono mt-1" id="sim-net-benefit">Rp 138,5 Miliar</p>
+            </div>
+            <div class="text-right">
+              <span class="text-xs text-slate-600">Rasio ROI Nilai Kontrak Rp 3,5B:</span>
+              <p class="text-2xl font-black text-emerald-700 font-mono" id="sim-roi-ratio">39.5x ROI</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- MODULE 5: 90-DAY GATE SIGN-OFF & BOARD DECISION (BENTO BOX LAYOUT) -->
+    <section id="tab-board" class="tab-content w-full h-full p-6 overflow-y-auto space-y-5 hidden">
+      
+      <!-- Header Tile -->
+      <div class="bento-card p-5 flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-sky-600"></i> Board Decision Gate &amp; Executive Sign-off (90 Hari Roadmap)
+          </h2>
+          <p class="text-xs text-slate-500">Ringkasan hasil siap saji untuk Dewan Komisaris dan Kementerian</p>
+        </div>
+        <span class="badge-base bg-sky-50 text-sky-800 border border-sky-200">Status: On Track</span>
+      </div>
+
+      <!-- 3 Gate Milestones Bento Row -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        
+        <!-- Gate 1 Card -->
+        <div class="bento-card p-6 border-t-4 border-t-sky-600 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold font-mono text-sky-700">HARI 30 - GATE 1</span>
+            <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">PASSED</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Data &amp; AI Exposure Discovery</h3>
+          <p class="text-xs text-slate-600">Pemetaan risiko AI pada 4.200 staf Field Metering &amp; AI Identity Resolution lintas sistem HRIS, Moodle, dan Oracle.</p>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[11px] text-slate-700 font-mono">
+            Demoable Output: Dashboard Live Disrupsi &amp; AI ID Resolver
+          </div>
+        </div>
+
+        <!-- Gate 2 Card -->
+        <div class="bento-card p-6 border-t-4 border-t-amber-500 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold font-mono text-amber-800">HARI 60 - GATE 2</span>
+            <span class="badge-base bg-emerald-100 text-emerald-800 border border-emerald-300">PASSED</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Capability &amp; Reskilling Pathway</h3>
+          <p class="text-xs text-slate-600">Penyederhanaan 12 Job Families, modul AI Skill Matcher, dan draft Perjanjian Kerja Bersama dengan Serikat Pekerja.</p>
+          <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-[11px] text-slate-700 font-mono">
+            Demoable Output: Modul Skill Matcher &amp; Script Serikat
+          </div>
+        </div>
+
+        <!-- Gate 3 Card -->
+        <div class="bento-card p-6 border-t-4 border-t-emerald-600 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-xs font-bold font-mono text-emerald-700">HARI 90 - GATE 3</span>
+            <span class="badge-base bg-sky-100 text-sky-800 border border-sky-300">READY FOR BOARD</span>
+          </div>
+          <h3 class="text-sm font-bold text-slate-900">Board &amp; Ministry Approval</h3>
+          <p class="text-xs text-slate-600">Penyampaian Working Prototype, Model Ekonomi Proxy Finansial, dan skema legal alih peran tanpa PHK.</p>
+          <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-[11px] text-emerald-800 font-mono font-bold">
+            Demoable Output: Executive Decision Deck &amp; Working App
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Executive Action Bento Tile -->
+      <div class="bento-card p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="space-y-1">
+          <h3 class="text-sm font-bold text-slate-900">Keputusan Direksi: Lanjutkan ke Fase Pilot Operational Hub (Kuartal 2)</h3>
+          <p class="text-xs text-slate-500">Rekomendasi disetujui untuk diimplementasikan pada 1.000 staf gelombang pertama.</p>
+        </div>
+        <button onclick="alert('Proposal keputusan telah disiapkan dan siap diunduh untuk paparan Direksi dan Kementerian.')" class="px-6 py-3 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl transition shadow-xs shrink-0">
+          <i class="fa-solid fa-file-export mr-2"></i> Ekspor Paket Proposal Direksi
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- PROVENANCE DATA MODAL (DRAWER) -->
+  <div id="provenance-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-lg rounded-2xl border border-slate-200 p-6 space-y-5 shadow-2xl relative">
+      <button onclick="closeProvenanceModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 text-lg">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="border-b border-slate-200 pb-3">
+        <span class="badge-base bg-sky-50 text-sky-800 border border-sky-200">DATA LINEAGE &amp; PROVENANCE</span>
+        <h3 class="text-lg font-bold text-slate-900 mt-1" id="modal-employee-name">Nama Pegawai</h3>
+        <p class="text-xs text-slate-500" id="modal-employee-title">Gelar Jabatan</p>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+          <span class="text-slate-600">Level Kapabilitas Ditargetkan:</span>
+          <span class="font-bold text-slate-900 font-mono" id="modal-level">Level 2</span>
+        </div>
+
+        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+          <span class="text-slate-600">Domain Kapabilitas:</span>
+          <span class="font-bold text-emerald-700 font-mono" id="modal-domain">Domain</span>
+        </div>
+
+        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-lg border border-slate-200">
+          <span class="text-slate-600">AI Confidence Score:</span>
+          <span class="font-bold text-amber-700 font-mono" id="modal-confidence">84%</span>
+        </div>
+
+        <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-1">
+          <p class="font-bold text-slate-900">Sumber Bukti Data (Traceability):</p>
+          <p class="text-slate-600 text-[11px]" id="modal-source">Log aktivitas Moodle LMS + Sertifikasi Lapangan</p>
+        </div>
+      </div>
+
+      <div class="p-3 bg-sky-50 border border-sky-200 rounded-lg text-[11px] text-sky-950">
+        <b>Pedoman Keputusan Direktur:</b> Skor di atas 80% dapat langsung direkomendasikan untuk program alih peran tanpa perlu verifikasi manual berulang.
+      </div>
+
+      <button onclick="closeProvenanceModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl transition border border-slate-300">
+        Tutup
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
+  <script>
+    // Tab Switcher Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        if (btn.id === 'btn-tab-aha') {
+          btn.className = 'nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all text-amber-900 bg-amber-50 hover:bg-amber-100/80 border border-amber-300 my-1.5';
+        } else {
+          btn.className = 'nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100';
+        }
+      });
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        if (tabId === 'tab-aha') {
+          activeBtn.className = 'nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-bold flex items-center gap-3 transition-all text-amber-950 bg-amber-200 border-2 border-amber-400 shadow-sm my-1.5';
+        } else {
+          activeBtn.className = 'nav-tab w-full px-3.5 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-3 transition-all text-white bg-slate-900 shadow-sm';
+        }
+      }
+    }
+
+    // Modal Provenance Drawer
+    function openProvenanceModal(name, title, level, domain, confidence, source) {
+      document.getElementById('modal-employee-name').innerText = name;
+      document.getElementById('modal-employee-title').innerText = title;
+      document.getElementById('modal-level').innerText = level;
+      document.getElementById('modal-domain').innerText = domain;
+      document.getElementById('modal-confidence').innerText = confidence;
+      document.getElementById('modal-source').innerText = source;
+      document.getElementById('provenance-modal').classList.remove('hidden');
+    }
+
+    function closeProvenanceModal() {
+      document.getElementById('provenance-modal').classList.add('hidden');
+    }
+
+    // AHA Moment Matching Engine Simulation
+    function runAhaMatcherSimulation() {
+      const progressBox = document.getElementById('matcher-progress');
+      const progressBar = document.getElementById('progress-bar');
+      const progressStatus = document.getElementById('progress-status');
+      const progressPercent = document.getElementById('progress-percent');
+      const resultsContainer = document.getElementById('aha-results');
+
+      progressBox.classList.remove('hidden');
+      let percent = 0;
+
+      const interval = setInterval(() => {
+        percent += 10;
+        progressBar.style.width = percent + '%';
+        progressPercent.innerText = percent + '%';
+
+        if (percent === 30) {
+          progressStatus.innerText = 'Menyinkronkan ID SAP & Moodle...';
+        } else if (percent === 60) {
+          progressStatus.innerText = 'Menghitung Matrix Skill Proximity IoT...';
+        } else if (percent === 90) {
+          progressStatus.innerText = 'Mengalokasikan ke Adjacent Bands...';
+        } else if (percent >= 100) {
+          clearInterval(interval);
+          progressStatus.innerText = 'Matching Selesai! 4.200 Staf Berhasil Dialokasikan.';
+          resultsContainer.classList.remove('opacity-60', 'pointer-events-none');
+        }
+      }, 150);
+    }
+
+    // Interactive Workforce Economic Model Calculations
+    function updateEconomicModel() {
+      const severance = parseFloat(document.getElementById('slider-severance').value);
+      const reskill = parseFloat(document.getElementById('slider-reskill').value);
+      const rehire = parseFloat(document.getElementById('slider-rehire').value);
+
+      document.getElementById('val-severance').innerText = 'Rp ' + severance + ' Juta';
+      document.getElementById('val-reskill').innerText = 'Rp ' + reskill + ' Juta';
+      document.getElementById('val-rehire').innerText = 'Rp ' + rehire + ' Juta';
+
+      const totalLayoffCost = (severance * 4200) / 1000; // in Billions
+      const totalRehireCost = (rehire * 4200) / 1000;
+      const totalProgramCost = ((reskill * 4200) / 1000) + 3.5; // Reskilling + 3.5B Contract
+
+      const totalA = totalLayoffCost + totalRehireCost;
+      const totalB = totalProgramCost;
+      const netSavings = totalA - totalB;
+      const roi = (netSavings / 3.5).toFixed(1);
+
+      document.getElementById('sim-layoff-cost').innerText = '-Rp ' + totalLayoffCost.toFixed(1) + ' M';
+      document.getElementById('sim-rehire-cost').innerText = '-Rp ' + totalRehireCost.toFixed(1) + ' M';
+      document.getElementById('sim-program-cost').innerText = '-Rp ' + totalProgramCost.toFixed(1) + ' M';
+      document.getElementById('sim-total-a').innerText = '-Rp ' + totalA.toFixed(1) + ' M';
+      document.getElementById('sim-total-b').innerText = '-Rp ' + totalB.toFixed(1) + ' M';
+      document.getElementById('sim-net-benefit').innerText = 'Rp ' + netSavings.toFixed(1) + ' Miliar';
+      document.getElementById('sim-roi-ratio').innerText = roi + 'x ROI';
+      document.getElementById('aha-saving-text').innerText = 'Rp ' + netSavings.toFixed(1) + ' Miliar';
+    }
+
+    // Initialize default tab
+    window.onload = function() {
+      switchTab('tab-exposure');
+    }
+  </script>
+</body>
+</html>
